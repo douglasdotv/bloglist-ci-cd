@@ -31,6 +31,10 @@ app.use(middleware.requestLogger)
 
 app.use(express.static(path.resolve(__dirname, 'dist')))
 
+app.get('/api/health', (_req, res) => {
+  res.status(200).send({ status: 'OK', timestamp: new Date().toISOString() })
+})
+
 app.use(
   '/api/blogs',
   middleware.tokenExtractor,
