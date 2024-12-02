@@ -50,7 +50,7 @@ describe('API Tests', () => {
   })
 
   test('Should return 404 for accessing a non-existent endpoint', async () => {
-    await api.get('/api/non-existing').expect(404)
+    await api.get('/api/api/non-existing').expect(404)
   })
 
   test('Should return 200 for fetching blogs', async () => {

@@ -1,5 +1,6 @@
 const config = require('./utils/config')
 const express = require('express')
+const path = require('path')
 require('express-async-errors')
 const cors = require('cors')
 const mongoose = require('mongoose')
@@ -28,6 +29,8 @@ app.use(express.json())
 
 app.use(middleware.requestLogger)
 
+app.use(express.static(path.resolve(__dirname, 'dist')))
+
 app.use(
   '/api/blogs',
   middleware.tokenExtractor,
@@ -38,7 +41,12 @@ app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 config.NODE_ENV === 'test' && app.use('/api/testing', testingRouter)
 
-app.use(middleware.unknownEndpoint)
+app.use('/api/*', middleware.unknownEndpoint)
+
+app.get('*', (_req, res) => {
+  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'))
+})
+
 app.use(middleware.errorHandler)
 
 module.exports = app
